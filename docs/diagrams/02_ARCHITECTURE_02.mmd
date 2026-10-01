@@ -1,0 +1,53 @@
+flowchart LR
+    subgraph CLIENT[Browser]
+        WEB[web - Next.js control room<br/>C15]
+    end
+
+    subgraph EDGE[Edge]
+        CADDY[caddy<br/>TLS, HSTS, routing]
+    end
+
+    subgraph APP[pnt1 image - process roles]
+        API[api - FastAPI<br/>C14 gateway + REST + WS<br/>C05 read, C06, C09 single run,<br/>C10, C11, C13, C12 read<br/>C02 HTTP ingest at L2-L3]
+        ING[ingest-worker x N<br/>C02 consumer, C04 Trust Engine,<br/>C05 writer, C17 inference]
+        SIG[signals-worker<br/>C07 connectors, C08 risk]
+        JOB[job-worker x N - arq<br/>C09 Monte Carlo, C10 re-runs,<br/>C12 benchmark]
+        WS[world-sim<br/>C01 ground truth, telemetry sim,<br/>10 injectors, replay]
+    end
+
+    subgraph DATA[Data]
+        PG[(postgres + PostGIS + Timescale<br/>schemas twin, sim, decision,<br/>audit, eval, auth)]
+        PGT[(truth schema<br/>role truth_rw only)]
+        RD[(redis<br/>streams, cache, job queue)]
+    end
+
+    subgraph OBS[Observability - C16]
+        PROM[prometheus]
+        GRAF[grafana]
+        ALRT[alertmanager]
+    end
+
+    WEB <-->|HTTPS REST + WSS| CADDY
+    CADDY <--> API
+    WS -->|HTTP batch, per-source keys| CADDY
+    WS -->|labels| PGT
+    API -->|XADD ev.raw| RD
+    RD -->|XREADGROUP ev.raw| ING
+    ING -->|state, trust, quarantine| PG
+    ING -->|XADD ev.domain| RD
+    RD -->|ev.domain fan-out| API
+    SIG -->|ev.signal + external_signal| RD
+    SIG --> PG
+    API -->|enqueue| RD
+    RD -->|jobs| JOB
+    JOB --> PG
+    JOB -.->|eval_ro| PGT
+    API --> PG
+    API -->|cache| RD
+    API -->|explain JSON| LLMX[Claude API]
+    SIG -->|forecasts, alerts| EXT[Open-Meteo / GDACS]
+    PROM -->|scrape /metrics| API
+    PROM --> ING
+    PROM --> JOB
+    PROM --> ALRT
+    GRAF --> PROM

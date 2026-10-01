@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant AC as Attack Center
+    participant W as World C01
+    participant TR as Trust + Mode C04
+    participant TW as Twin C05
+    participant UI as Control Room
+    AC->>W: inject mass_blackout(70% sources, 20 sim-min)
+    W--xTR: 70% of sources silent
+    TR->>TR: F falls: 100 -> 85 -> 30
+    TR->>UI: mode.changed NORMAL -> DEGRADED (F < 90)
+    TR->>UI: mode.changed DEGRADED -> BLIND (F < 50)
+    TW->>TW: dead-reckon along routes, bands grow with age
+    TW->>UI: freshness heatmap, widened ETA bands
+    W->>TR: sources resume
+    TR->>UI: BLIND -> DEGRADED (F >= 50) -> RECOVERY (F >= 90, C >= 85)
+    TW->>TW: reconcile predicted vs reported, record blind-period error
+    TR->>UI: RECOVERY -> NORMAL after 10 sim-min stable

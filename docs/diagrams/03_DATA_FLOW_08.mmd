@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant SC as Scenario Lab
+    participant SIM as Cascade engine C09
+    participant PORT as P-CHE port
+    participant SHP as Shipments / vessels
+    participant WH as Warehouses W-CHE, W-BLR
+    participant FAC as Factory F-SRI
+    participant CUS as Customers C-CHE, C-BLR, C-KOC
+    participant UI as Cascade View
+    SC->>SIM: port_closure(P-CHE, 48h), seed
+    SIM->>PORT: T+0 cap = 0 on L022, L023, L029, L030
+    PORT->>SHP: inbound vessels queue, congestion rises
+    SHP->>WH: T+2..T+12 expected inbound units missing
+    WH->>WH: inventory depletes vs safety stock
+    WH->>FAC: T+10 SKU-C components short at F-SRI (via W-CHE)
+    FAC->>WH: T+14 F-SRI output reduced, finished goods short
+    WH->>CUS: T+18 first stockout at W-CHE SKU-C
+    CUS->>CUS: orders at risk rise, late penalties accrue
+    SIM->>UI: frame per hour T+0..T+72 (inventory, backlog, link util, cost)
+    SIM->>UI: KPI ribbon: delay, cost, orders affected, inventory at risk
+    Note over SIM,UI: hours shown are illustrative, engine computes actual timings

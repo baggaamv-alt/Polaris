@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant OP as Operator (Attack Center)
+    participant API as API C14
+    participant TW as Twin C05
+    participant Q as Quarantine store
+    participant OPZ as Optimizer C10
+    participant SIM as Simulation C09
+    OP->>API: POST /compare/raw-vs-trusted {scenario_id}
+    API->>TW: snapshot(trusted) at version v
+    API->>Q: quarantined readings since attack start
+    API->>API: build snapshot(raw) = trusted snapshot with quarantined readings applied
+    par Trusted run
+        API->>OPZ: optimize(snapshot trusted, preset)
+        OPZ-->>API: plan_T
+    and Raw run
+        API->>OPZ: optimize(snapshot raw, preset)
+        OPZ-->>API: plan_R
+    end
+    API->>SIM: evaluate plan_T and plan_R under the same trusted snapshot + Monte Carlo (common random numbers)
+    SIM-->>API: cost, delay, stockouts for both
+    API-->>OP: side-by-side diff: routes changed, cost delta, orders lost
+    Note over API,SIM: Level 3: plans are also scored against ground truth by C12 (Admin view)

@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> NORMAL
+    NORMAL --> DEGRADED: F < 90% or C < 85%
+    NORMAL --> BLIND: F < 50%
+    DEGRADED --> BLIND: F < 50%
+    DEGRADED --> RECOVERY: F >= 90% and C >= 85%
+    BLIND --> DEGRADED: F >= 50%
+    RECOVERY --> NORMAL: stable 10 sim-min and reconciliation done
+    RECOVERY --> DEGRADED: F < 90% or C < 85%
+    RECOVERY --> BLIND: F < 50%
+
+    NORMAL: fresh and trusted data
+    DEGRADED: prefer trusted sources, widen uncertainty
+    BLIND: last trusted state + forecasts + dead reckoning, bands grow with age
+    RECOVERY: reconcile predicted vs reported, record error, shrink bands

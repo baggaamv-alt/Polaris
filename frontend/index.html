@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vigilax 2.5 · Logistics Resilience Command</title>
+  <meta name="description" content="Vigilax 2.5: logistics resilience command platform.">
+  <script>/* apply the saved theme before first paint */
+    try { const t = localStorage.getItem("pnt1.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23f1ece0'/%3E%3Crect x='1' y='4' width='8' height='6' fill='%23fff' stroke='%232a2d31'/%3E%3Crect x='9' y='6' width='5' height='4' fill='%2334506f' stroke='%232a2d31'/%3E%3Crect x='3' y='11' width='3' height='3' fill='%2362666b'/%3E%3Crect x='10' y='11' width='3' height='3' fill='%2362666b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/vendor/maplibre-gl.css">
+  <link rel="stylesheet" href="/static/style.css?v=250">
+</head>
+<body>
+<div class="boot" id="boot"><div class="in"><b>VIGILAX</b><div class="road"><span id="bootTruck"></span></div><span id="bootMsg">Connecting…</span></div></div>
+
+<header class="topbar">
+  <a class="brand" href="#/"><span class="logo" id="logo"></span><span>VIGILAX<small>2.5 · Logistics resilience</small></span></a>
+  <nav class="nav" id="nav" aria-label="Main">
+    <a href="#/command" data-p="command"><i data-ico="gauge"></i><span class="lbl">Command <span class="lbl-long">Center</span></span></a>
+    <a href="#/twin" data-p="twin"><i data-ico="network"></i><span class="lbl">Digital Twin</span></a>
+    <a href="#/incident" data-p="incident"><i data-ico="bolt"></i><span class="lbl">Incident <span class="lbl-long">Simulator</span></span></a>
+    <a href="#/recovery" data-p="recovery"><i data-ico="route"></i><span class="lbl">AI Recovery</span></a>
+    <a href="#/business" data-p="business"><i data-ico="swap"></i><span class="lbl">Business Flow</span></a>
+    <a href="#/proof" data-p="proof"><i data-ico="shield"></i><span class="lbl">Resilience <span class="lbl-long">&amp; Proof</span></span></a>
+  </nav>
+  <div class="sysbar">
+    <span class="simflag" title="Fleet, orders and telemetry are simulated; weather is real">Simulated network</span>
+    <div class="clock"><b id="simtime">—</b><span>sim time</span></div>
+    <span class="seg" id="speedSeg" role="group" aria-label="Simulation speed"><button data-v="30">30×</button><button data-v="60" class="on">60×</button><button data-v="300">300×</button><button data-v="600">600×</button></span>
+    <button class="iconbtn" id="pause" title="Pause / resume" aria-label="Pause simulation"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+    <span class="modechip st-NORMAL" id="mode" title="Network data mode">NORMAL</span>
+    <button class="iconbtn" id="themeBtn" title="Theme" aria-label="Switch theme"></button>
+  </div>
+</header>
+<div class="wxbar" id="wxbar" role="region" aria-label="Weather feed" aria-live="off" data-state="loading"><div class="wx-row"><span class="wx-k">Weather</span><span class="wx-msg">Connecting…</span></div></div>
+<div class="wxpop" id="wxPop" hidden></div>
+
+<!-- ======================================================================= STORY (scroll landing) -->
+<section class="story" id="story" hidden>
+  <div class="sticky"><div class="canvaswrap"><svg class="net" id="storyNet" viewBox="0 0 560 540" role="img" aria-label="Logistics network"></svg></div>
+    <div class="hud-story" id="storyHud"></div></div>
+  <div class="steps" id="storySteps"></div>
+</section>
+
+<!-- ======================================================================= APP -->
+<div class="stage" id="stage" data-layout="map">
+  <div class="mapwrap" id="mapwrap">
+    <div id="map" aria-label="3D logistics digital twin map"></div>
+    <div class="hud tl glass ladder" id="ladder" aria-label="Camera"></div>
+    <div class="hud tr" style="display:flex;gap:8px;align-items:flex-start">
+      <div class="glass layers" id="layersBox" hidden></div>
+      <div class="glass mapctl" id="mapctl"></div>
+    </div>
+    <div class="hud bl" style="display:grid;gap:8px;justify-items:start">
+      <div class="glass legend" id="legend"></div>
+      <div class="glass mchips" id="mapChips"></div>
+    </div>
+    <div class="mapbanner" id="mapBanner" hidden></div>
+    <div class="dock glass" id="dock" hidden></div>
+  </div>
+
+  <aside class="panel" id="panel">
+    <!-- ================================================================ COMMAND CENTER -->
+    <section class="pg" data-page="command">
+      <div class="pg-head"><div><h1>Command Center</h1></div>
+        <div class="actions"><a class="btn sm" href="#/incident">Simulate a disruption</a><a class="btn ghost sm" href="#/recovery">Plan recovery</a><a class="btn ghost sm" href="#/proof">Review findings</a></div></div>
+      <div class="card" id="wxCard"></div>
+      <div class="card glow" id="riCard"></div>
+      <div class="card"><div class="card-h"><h2>Operations</h2></div><div class="kpis" id="opsKpis"></div></div>
+      <div class="card"><div class="card-h"><h2>At-risk shipments</h2><div class="right"><a class="btn quiet sm" href="#/recovery">Open AI Recovery →</a></div></div><div id="riskList"></div></div>
+      <div class="card"><div class="card-h"><h2>Active incidents</h2><div class="right"><a class="btn quiet sm" href="#/incident">Inject disruption →</a></div></div><div id="incNow"></div><ul class="events" id="events"></ul></div>
+      <div class="card"><div class="card-h"><h2>Telemetry pipeline</h2></div><div class="pipe" id="pipe"></div></div>
+    </section>
+
+    <!-- ================================================================ DIGITAL TWIN -->
+    <section class="pg" data-page="twin">
+      <div class="pg-head"><div><h1>Digital Twin</h1></div></div>
+      <div class="card"><div class="row"><input type="search" id="twinSearch" placeholder="Find truck or facility" list="twinList" style="flex:1"><datalist id="twinList"></datalist><button class="btn sm" id="twinGo">Fly to</button></div>
+        <div class="grid3" style="margin-top:10px" id="trustDist"></div></div>
+      <div id="twinEntity"></div>
+      <div class="card"><div class="card-h"><h2>Vehicle health watchlist</h2></div><div id="healthList"></div></div>
+    </section>
+
+    <!-- ================================================================ INCIDENT SIMULATOR -->
+    <section class="pg" data-page="incident">
+      <div class="pg-head"><div><h1>Incident Simulator</h1></div>
+        <div class="actions"><button class="btn ghost sm" id="stopAll">Stop all</button></div></div>
+      <div class="chain" id="incLine" aria-label="Causal chain from incident to recovery"></div>
+      <div class="tabs" id="incTabs"><button data-t="phys" class="on"><i data-ico="bolt"></i> Physical incidents</button><button data-t="data"><i data-ico="shield"></i> Data attacks</button></div>
+      <div class="tabp on" data-t="phys">
+        <div class="card"><div class="card-h"><h2>Incident</h2></div><div class="tiles" id="incTiles"></div>
+          <div class="form-grid" style="margin-top:10px">
+            <label class="field">Target<select id="incTarget"></select></label>
+            <label class="field">Duration (h)<input id="incDur" type="number" value="8" min="1" max="72"></label>
+            <label class="field">Starts in (h)<input id="incStart" type="number" value="0" min="0" max="48"></label>
+            <label class="field">Magnitude<input id="incMag" type="number" value="0.6" step="0.1" min="0" max="3"></label>
+            <label class="field">Chance<input id="incProb" type="number" value="0.8" step="0.05" min="0" max="1"></label>
+            <label class="field">MC futures<select id="incRuns"><option>100</option><option selected>200</option><option>300</option><option>500</option></select></label>
+          </div>
+          <details style="margin-top:10px"><summary class="xs muted" style="cursor:pointer">Optimizer priorities</summary><div id="incPrio" style="margin-top:8px"></div></details>
+          <div class="row wrap" style="margin-top:12px"><button class="btn danger" id="incLive"><i data-ico="bolt"></i> Inject live + forecast</button><button class="btn ghost" id="incForecast">Forecast only</button><span class="xs muted" id="incHint"></span></div>
+        </div>
+        <div id="incActive"></div>
+        <div class="card" id="wxChain"></div>
+        <div id="convergence"></div>
+        <div id="forecast"></div>
+      </div>
+      <div class="tabp" data-t="data">
+        <div class="card"><div class="card-h"><h2>Attack Center</h2></div>
+          <div class="chain" id="atkChain"></div><div id="library"></div><p class="xs muted" id="activeAttacks"></p></div>
+        <div class="card"><div class="card-h"><h2>Watched entity</h2><span class="sub" id="watching"></span></div><div id="watch"></div></div>
+        <div class="card"><div class="card-h"><h2>Quarantine queue</h2></div><div id="quarantine"></div></div>
+        <div class="card"><div class="card-h"><h2>Raw vs trusted decision</h2></div>
+          
+          <button class="btn ghost sm" id="rawVsTrusted">Compare decisions</button><div id="rvt" style="margin-top:10px"></div></div>
+      </div>
+    </section>
+
+    <!-- ================================================================ AI RECOVERY -->
+    <section class="pg" data-page="recovery">
+      <div class="pg-head"><div><h1>AI Recovery</h1></div></div>
+      <div class="chain" id="recLine" aria-label="From current route to recovery"></div>
+      <div class="tabs" id="recTabs"><button data-t="routes" class="on"><i data-ico="route"></i> Route intelligence</button><button data-t="heal"><i data-ico="refresh"></i> Self-healing</button></div>
+      <div class="tabp on" data-t="routes">
+        <div class="card"><div class="card-h"><h2>Shipment</h2><div class="right"><span class="xs muted" id="odHint"></span></div></div>
+          <div class="form-grid">
+            <label class="field">From<select id="odFrom"></select></label><label class="field">To<select id="odTo"></select></label>
+            <label class="field">Pallets<input id="odUnits" type="number" value="40" min="1" max="2000"></label>
+            <label class="field">Priority<select id="odPrio"><option>NORMAL</option><option>HIGH</option><option>CRITICAL</option></select></label>
+          </div>
+          <div class="row wrap" style="margin-top:8px"><span class="xs muted">Lanes</span><span class="chips" id="odChips"></span></div>
+        </div>
+        <div class="card"><div class="card-h"><h2>Priorities</h2></div><div id="recPrio"></div></div>
+        <div class="card ai" id="routeCard"></div>
+        <div class="card" id="costCard"></div>
+      </div>
+      <div class="tabp" data-t="heal">
+        <div class="card"><div class="card-h"><h2>Self-healing routes</h2></div><div class="flow" id="healFlow"></div></div>
+        <div class="card"><div class="card-h"><h2>Trucks at risk</h2><div class="right"><button class="btn quiet sm" id="healRefresh">Refresh</button></div></div><div id="healList"></div></div>
+        <div class="card ai" id="healOptions"></div>
+        <div class="card" id="reallocCard"></div>
+      </div>
+    </section>
+
+    <!-- ================================================================ BUSINESS FLOW -->
+    <section class="pg" data-page="business">
+      <div class="pg-head"><div><h1>Business Flow</h1></div>
+        <div class="actions"><button class="btn sm" id="openSupport" aria-haspopup="dialog" aria-controls="supportDrawer"><i data-ico="headset"></i> Support &amp; Contact</button></div></div>
+      <div class="bflow" id="bflow"></div>
+      <div class="grid2" style="grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)">
+        <div class="card"><div class="card-h"><h2>Orders in transit</h2><div class="right"><select class="sm" id="ordFilter"><option value="">All</option><option value="risk">At risk / delayed</option><option value="CRITICAL">Critical cargo</option></select></div></div>
+          <input type="search" id="ordSearch" placeholder="Search orders" style="width:100%;margin-bottom:8px"><div id="ordTable"></div></div>
+        <div class="card" id="ordDetail"></div>
+      </div>
+      <div class="card" id="drivers"></div>
+    </section>
+
+    <!-- ================================================================ RESILIENCE & PROOF -->
+    <section class="pg" data-page="proof">
+      <div class="pg-head"><div><h1>Resilience &amp; Proof</h1></div></div>
+      <div class="tabs" id="proofTabs"><button data-t="doctor" class="on"><i data-ico="pulse"></i> Supply Chain Doctor</button><button data-t="tech"><i data-ico="check"></i> Technical proof</button><button data-t="time"><i data-ico="replay"></i> Time machine</button></div>
+      <div class="tabp on" data-t="doctor">
+        <div class="card"><div class="card-h"><h2>Findings</h2></div><div id="findings"></div></div>
+        <div class="card"><div class="card-h"><h2>Dependencies</h2><span class="sub" id="depTitle"></span></div><div id="dep"></div></div>
+        <div class="card"><div class="card-h"><h2>Critical facilities</h2></div><div id="critical"></div></div>
+      </div>
+      <div class="tabp" data-t="tech">
+        <div class="card"><div class="card-h"><h2>Technical proof</h2><div class="right"><button class="btn quiet sm" id="evalRefresh">Refresh</button></div></div><div class="stats" id="evalStats"></div><p class="note" id="evalNote"></p></div>
+        <div class="card"><div class="card-h"><h2>Attack detection by injector</h2></div><div id="detection"></div></div>
+        <div class="card"><div class="card-h"><h2>Monte Carlo</h2></div><div id="mcProof"></div></div>
+        <div class="card"><div class="card-h"><h2>Anomaly model</h2></div><div id="modelCard"></div></div>
+      </div>
+      <div class="tabp" data-t="time">
+        <div class="card"><div class="card-h"><h2>Digital twin time machine</h2></div><div id="tmChart"></div><div id="tmState"></div></div>
+        <div class="card"><div class="card-h"><h2>Audit trail</h2><span class="sub">SHA-256 hash chain</span><div class="right"><span class="xs" id="verifyOut"></span><button class="btn ghost sm" id="verify">Verify chain</button></div></div>
+          <div class="row" style="margin-bottom:8px"><select class="sm" id="auditType"><option value="">All types</option></select><input type="search" class="sm" id="auditSearch" placeholder="Search" style="flex:1"></div>
+          <div class="tscroll" id="audit" style="max-height:480px"></div></div>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<div class="scrim" id="supportScrim" hidden></div>
+<aside class="drawer" id="supportDrawer" role="dialog" aria-modal="true" aria-labelledby="supportTitle" hidden></aside>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="tip" id="tip"></div>
+<script src="/static/vendor/maplibre-gl.js"></script>
+<script src="/static/vendor/topojson-client.min.js"></script>
+<script src="/static/icons.js?v=250"></script>
+<script src="/static/sprites.js?v=250"></script>
+<script src="/static/app.js?v=250"></script>
+<script src="/static/map.js?v=250"></script>
+<script src="/static/weather.js?v=250"></script>
+<script src="/static/pages/command.js?v=250"></script>
+<script src="/static/pages/twin.js?v=250"></script>
+<script src="/static/pages/incident.js?v=250"></script>
+<script src="/static/pages/recovery.js?v=250"></script>
+<script src="/static/pages/business.js?v=250"></script>
+<script src="/static/pages/proof.js?v=250"></script>
+<script src="/static/pages/story.js?v=250"></script>
+<script src="/static/boot.js?v=250"></script>
+</body>
+</html>

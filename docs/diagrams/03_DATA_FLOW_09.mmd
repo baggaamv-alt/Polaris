@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant OM as Open-Meteo (LIVE)
+    participant SIGW as Signals C07
+    participant RISK as Risk C08
+    participant SIM as Simulation C09 (MC 200)
+    participant OPZ as Optimizer C10
+    participant COP as Copilot C13
+    participant UI as Early Warning / Strategies
+    participant OPR as Operator
+    participant DEC as Decision C11
+    SIGW->>OM: hourly forecast for HYD-VGA sample points
+    alt API fails
+        SIGW->>SIGW: fall back to cached REPLAY, label REPLAY
+    end
+    OM-->>SIGW: precip, gusts, codes
+    SIGW->>RISK: signal.weather (corridor features)
+    RISK->>RISK: p = sigmoid(features), calibrated
+    RISK->>UI: corridor risk, p, drivers, lead time about 8h
+    RISK->>SIM: trigger (p >= 0.2 and active flow on corridor)
+    SIM->>SIM: do nothing vs reroute vs transfer vs hybrid, common random numbers
+    SIM-->>OPZ: L0, L1, P50 / P90, robustness
+    OPZ->>OPZ: C_a per strategy, EV: expected avoided = p (L0 - L1), net, p*
+    OPZ-->>COP: structured output JSON
+    COP-->>UI: narrative (numbers validated against JSON)
+    OPZ-->>UI: futures table + break-even p* vs current p
+    OPR->>UI: Approve (or Modify objective / constraints)
+    UI->>DEC: POST /decisions
+    DEC->>DEC: audit entry (inputs + trust snapshot + versions)
+    DEC-->>UI: twin updated, shipments rerouted

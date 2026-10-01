@@ -1,0 +1,139 @@
+# SYNTHETIC seed network for PNT1. Not real operational data.
+# Coordinates are approximate city/industrial-area locations; distances = haversine x mode route factor.
+version: 1
+seed: 20261001
+skus: [SKU-A, SKU-B, SKU-C, SKU-D, SKU-E]
+nodes:
+  - {id: S01, type: Supplier, name: "Ludhiana auto-parts supplier", lat: 30.9, lon: 75.85, capacity: 1200, primary_sku: SKU-D}
+  - {id: S02, type: Supplier, name: "Ahmedabad pharma supplier", lat: 23.02, lon: 72.57, capacity: 900, primary_sku: SKU-B}
+  - {id: S03, type: Supplier, name: "Chakan (Pune) auto-parts supplier", lat: 18.76, lon: 73.86, capacity: 1400, primary_sku: SKU-D}
+  - {id: S04, type: Supplier, name: "Sriperumbudur electronics supplier", lat: 12.96, lon: 79.95, capacity: 1100, primary_sku: SKU-C}
+  - {id: S05, type: Supplier, name: "Hosur electronics supplier", lat: 12.74, lon: 77.83, capacity: 1000, primary_sku: SKU-C}
+  - {id: S06, type: Supplier, name: "Indore packaged-food supplier", lat: 22.72, lon: 75.86, capacity: 1600, primary_sku: SKU-A}
+  - {id: S07, type: Supplier, name: "Visakhapatnam pharma supplier", lat: 17.69, lon: 83.22, capacity: 800, primary_sku: SKU-B}
+  - {id: S08, type: Supplier, name: "Kolkata consumer-goods supplier", lat: 22.57, lon: 88.36, capacity: 1300, primary_sku: SKU-E}
+  - {id: P-MUN, type: Port, name: "Mundra-type port (Gujarat)", lat: 22.74, lon: 69.7, capacity: 6000}
+  - {id: P-JNP, type: Port, name: "Nhava Sheva-type port (Mumbai)", lat: 18.95, lon: 72.95, capacity: 7000}
+  - {id: P-CHE, type: Port, name: "Chennai-type port", lat: 13.1, lon: 80.3, capacity: 5000}
+  - {id: P-VTZ, type: Port, name: "Visakhapatnam-type port", lat: 17.69, lon: 83.28, capacity: 3500}
+  - {id: P-KOL, type: Port, name: "Kolkata/Haldia-type port", lat: 22.03, lon: 88.06, capacity: 3000}
+  - {id: F-SAN, type: Factory, name: "Sanand assembly plant", lat: 22.99, lon: 72.38, capacity: 1500}
+  - {id: F-SRI, type: Factory, name: "Sriperumbudur assembly plant", lat: 12.97, lon: 79.94, capacity: 1500}
+  - {id: W-DEL, type: Warehouse, name: "Delhi NCR hub (Farukhnagar-type)", lat: 28.45, lon: 76.83, capacity: 60000}
+  - {id: W-AMD, type: Warehouse, name: "Ahmedabad hub", lat: 23.03, lon: 72.58, capacity: 35000}
+  - {id: W-BOM, type: Warehouse, name: "Mumbai hub (Bhiwandi-type)", lat: 19.3, lon: 73.06, capacity: 55000}
+  - {id: W-PNQ, type: Warehouse, name: "Pune hub", lat: 18.52, lon: 73.86, capacity: 30000}
+  - {id: W-NAG, type: Warehouse, name: "Nagpur hub", lat: 21.15, lon: 79.09, capacity: 40000}
+  - {id: W-HYD, type: Warehouse, name: "Hyderabad hub (Shamshabad-type)", lat: 17.24, lon: 78.43, capacity: 50000}
+  - {id: W-VGA, type: Warehouse, name: "Vijayawada hub", lat: 16.51, lon: 80.65, capacity: 25000}
+  - {id: W-BLR, type: Warehouse, name: "Bengaluru hub (Hoskote-type)", lat: 13.07, lon: 77.8, capacity: 50000}
+  - {id: W-CHE, type: Warehouse, name: "Chennai hub", lat: 13.03, lon: 80.02, capacity: 40000}
+  - {id: W-KOL, type: Warehouse, name: "Kolkata hub (Dankuni-type)", lat: 22.68, lon: 88.29, capacity: 35000}
+  - {id: C-DEL, type: CustomerCluster, name: "Delhi NCR demand cluster", lat: 28.61, lon: 77.21, capacity: 0}
+  - {id: C-JAI, type: CustomerCluster, name: "Jaipur demand cluster", lat: 26.91, lon: 75.79, capacity: 0}
+  - {id: C-LKO, type: CustomerCluster, name: "Lucknow demand cluster", lat: 26.85, lon: 80.95, capacity: 0}
+  - {id: C-MUM, type: CustomerCluster, name: "Mumbai demand cluster", lat: 19.08, lon: 72.88, capacity: 0}
+  - {id: C-PNQ, type: CustomerCluster, name: "Pune demand cluster", lat: 18.52, lon: 73.86, capacity: 0}
+  - {id: C-AMD, type: CustomerCluster, name: "Ahmedabad demand cluster", lat: 23.02, lon: 72.57, capacity: 0}
+  - {id: C-NAG, type: CustomerCluster, name: "Nagpur demand cluster", lat: 21.15, lon: 79.09, capacity: 0}
+  - {id: C-HYD, type: CustomerCluster, name: "Hyderabad demand cluster", lat: 17.39, lon: 78.49, capacity: 0}
+  - {id: C-VGA, type: CustomerCluster, name: "Vijayawada demand cluster", lat: 16.51, lon: 80.65, capacity: 0}
+  - {id: C-VTZ, type: CustomerCluster, name: "Visakhapatnam demand cluster", lat: 17.69, lon: 83.22, capacity: 0}
+  - {id: C-BHU, type: CustomerCluster, name: "Bhubaneswar demand cluster", lat: 20.3, lon: 85.82, capacity: 0}
+  - {id: C-BLR, type: CustomerCluster, name: "Bengaluru demand cluster", lat: 12.97, lon: 77.59, capacity: 0}
+  - {id: C-CHE, type: CustomerCluster, name: "Chennai demand cluster", lat: 13.08, lon: 80.27, capacity: 0}
+  - {id: C-KOC, type: CustomerCluster, name: "Kochi demand cluster", lat: 9.93, lon: 76.27, capacity: 0}
+  - {id: C-KOL, type: CustomerCluster, name: "Kolkata demand cluster", lat: 22.57, lon: 88.36, capacity: 0}
+links:
+  - {id: L001, from: S01, to: W-DEL, mode: road, dist_km: 375, base_time_h: 8.8, capacity_units_day: 1800, cost_per_unit: 844, co2_kg_per_unit: 11.6, corridor_id: S01-W-DEL}
+  - {id: L002, from: S02, to: W-AMD, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: S02-W-AMD}
+  - {id: L003, from: S02, to: W-BOM, mode: road, dist_km: 542, base_time_h: 12.5, capacity_units_day: 1800, cost_per_unit: 1219, co2_kg_per_unit: 16.8, corridor_id: S02-W-BOM}
+  - {id: L004, from: S03, to: W-PNQ, mode: road, dist_km: 35, base_time_h: 1.3, capacity_units_day: 1800, cost_per_unit: 78, co2_kg_per_unit: 1.1, corridor_id: S03-W-PNQ}
+  - {id: L005, from: S03, to: W-BOM, mode: road, dist_km: 134, base_time_h: 3.5, capacity_units_day: 1800, cost_per_unit: 302, co2_kg_per_unit: 4.2, corridor_id: S03-W-BOM}
+  - {id: L006, from: S03, to: F-SAN, mode: road, dist_km: 643, base_time_h: 14.8, capacity_units_day: 900, cost_per_unit: 1447, co2_kg_per_unit: 19.9, corridor_id: S03-F-SAN}
+  - {id: L007, from: S04, to: F-SRI, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: S04-F-SRI}
+  - {id: L008, from: S04, to: W-CHE, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: S04-W-CHE}
+  - {id: L009, from: S05, to: W-BLR, mode: road, dist_km: 48, base_time_h: 1.6, capacity_units_day: 1800, cost_per_unit: 108, co2_kg_per_unit: 1.5, corridor_id: S05-W-BLR}
+  - {id: L010, from: S05, to: F-SRI, mode: road, dist_km: 299, base_time_h: 7.1, capacity_units_day: 900, cost_per_unit: 673, co2_kg_per_unit: 9.3, corridor_id: S05-F-SRI}
+  - {id: L011, from: S06, to: W-NAG, mode: road, dist_km: 489, base_time_h: 11.4, capacity_units_day: 1800, cost_per_unit: 1100, co2_kg_per_unit: 15.2, corridor_id: S06-W-NAG}
+  - {id: L012, from: S06, to: W-AMD, mode: road, dist_km: 439, base_time_h: 10.3, capacity_units_day: 1800, cost_per_unit: 988, co2_kg_per_unit: 13.6, corridor_id: S06-W-AMD}
+  - {id: L013, from: S06, to: W-DEL, mode: road, dist_km: 838, base_time_h: 19.1, capacity_units_day: 900, cost_per_unit: 1885, co2_kg_per_unit: 26, corridor_id: S06-W-DEL}
+  - {id: L014, from: S07, to: W-VGA, mode: road, dist_km: 394, base_time_h: 9.3, capacity_units_day: 1800, cost_per_unit: 886, co2_kg_per_unit: 12.2, corridor_id: S07-W-VGA}
+  - {id: L015, from: S07, to: P-VTZ, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 900, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: S07-P-VTZ}
+  - {id: L016, from: S08, to: W-KOL, mode: road, dist_km: 18, base_time_h: 0.9, capacity_units_day: 1800, cost_per_unit: 41, co2_kg_per_unit: 0.6, corridor_id: S08-W-KOL}
+  - {id: L017, from: S08, to: P-KOL, mode: road, dist_km: 88, base_time_h: 2.5, capacity_units_day: 900, cost_per_unit: 197, co2_kg_per_unit: 2.7, corridor_id: S08-P-KOL}
+  - {id: L018, from: P-MUN, to: W-AMD, mode: road, dist_km: 386, base_time_h: 9.1, capacity_units_day: 1800, cost_per_unit: 868, co2_kg_per_unit: 12, corridor_id: P-MUN-W-AMD}
+  - {id: L019, from: P-MUN, to: W-DEL, mode: rail, dist_km: 1195, base_time_h: 38.1, capacity_units_day: 2500, cost_per_unit: 1434, co2_kg_per_unit: 13.1, corridor_id: WDFC}
+  - {id: L020, from: P-JNP, to: W-BOM, mode: road, dist_km: 53, base_time_h: 1.7, capacity_units_day: 3000, cost_per_unit: 119, co2_kg_per_unit: 1.6, corridor_id: P-JNP-W-BOM}
+  - {id: L021, from: P-JNP, to: W-PNQ, mode: road, dist_km: 139, base_time_h: 3.6, capacity_units_day: 1800, cost_per_unit: 313, co2_kg_per_unit: 4.3, corridor_id: P-JNP-W-PNQ}
+  - {id: L022, from: P-CHE, to: W-CHE, mode: road, dist_km: 41, base_time_h: 1.4, capacity_units_day: 3000, cost_per_unit: 92, co2_kg_per_unit: 1.3, corridor_id: P-CHE-W-CHE}
+  - {id: L023, from: P-CHE, to: W-BLR, mode: road, dist_km: 352, base_time_h: 8.3, capacity_units_day: 1800, cost_per_unit: 792, co2_kg_per_unit: 10.9, corridor_id: P-CHE-W-BLR}
+  - {id: L024, from: P-VTZ, to: W-VGA, mode: road, dist_km: 401, base_time_h: 9.4, capacity_units_day: 1800, cost_per_unit: 903, co2_kg_per_unit: 12.4, corridor_id: P-VTZ-W-VGA}
+  - {id: L025, from: P-VTZ, to: W-HYD, mode: road, dist_km: 672, base_time_h: 15.4, capacity_units_day: 900, cost_per_unit: 1512, co2_kg_per_unit: 20.8, corridor_id: P-VTZ-W-HYD}
+  - {id: L026, from: P-KOL, to: W-KOL, mode: road, dist_km: 99, base_time_h: 2.7, capacity_units_day: 1800, cost_per_unit: 222, co2_kg_per_unit: 3.1, corridor_id: P-KOL-W-KOL}
+  - {id: L027, from: P-MUN, to: P-JNP, mode: sea, dist_km: 729, base_time_h: 41.2, capacity_units_day: 4000, cost_per_unit: 437, co2_kg_per_unit: 5.8, corridor_id: WCOAST}
+  - {id: L028, from: P-JNP, to: P-MUN, mode: sea, dist_km: 729, base_time_h: 41.2, capacity_units_day: 4000, cost_per_unit: 437, co2_kg_per_unit: 5.8, corridor_id: WCOAST}
+  - {id: L029, from: P-CHE, to: P-VTZ, mode: sea, dist_km: 813, base_time_h: 44.5, capacity_units_day: 4000, cost_per_unit: 488, co2_kg_per_unit: 6.5, corridor_id: ECOAST}
+  - {id: L030, from: P-VTZ, to: P-CHE, mode: sea, dist_km: 813, base_time_h: 44.5, capacity_units_day: 4000, cost_per_unit: 488, co2_kg_per_unit: 6.5, corridor_id: ECOAST}
+  - {id: L031, from: P-VTZ, to: P-KOL, mode: sea, dist_km: 938, base_time_h: 49.5, capacity_units_day: 4000, cost_per_unit: 563, co2_kg_per_unit: 7.5, corridor_id: ECOAST}
+  - {id: L032, from: P-KOL, to: P-VTZ, mode: sea, dist_km: 938, base_time_h: 49.5, capacity_units_day: 4000, cost_per_unit: 563, co2_kg_per_unit: 7.5, corridor_id: ECOAST}
+  - {id: L033, from: F-SAN, to: W-AMD, mode: road, dist_km: 27, base_time_h: 1.1, capacity_units_day: 1800, cost_per_unit: 61, co2_kg_per_unit: 0.8, corridor_id: F-SAN-W-AMD}
+  - {id: L034, from: F-SAN, to: W-BOM, mode: road, dist_km: 541, base_time_h: 12.5, capacity_units_day: 1800, cost_per_unit: 1218, co2_kg_per_unit: 16.8, corridor_id: F-SAN-W-BOM}
+  - {id: L035, from: F-SAN, to: W-DEL, mode: road, dist_km: 979, base_time_h: 22.3, capacity_units_day: 900, cost_per_unit: 2203, co2_kg_per_unit: 30.3, corridor_id: F-SAN-W-DEL}
+  - {id: L036, from: F-SRI, to: W-CHE, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: F-SRI-W-CHE}
+  - {id: L037, from: F-SRI, to: W-BLR, mode: road, dist_km: 302, base_time_h: 7.2, capacity_units_day: 1800, cost_per_unit: 679, co2_kg_per_unit: 9.4, corridor_id: F-SRI-W-BLR}
+  - {id: L038, from: F-SRI, to: W-HYD, mode: road, dist_km: 652, base_time_h: 15, capacity_units_day: 900, cost_per_unit: 1467, co2_kg_per_unit: 20.2, corridor_id: F-SRI-W-HYD}
+  - {id: L039, from: W-DEL, to: W-AMD, mode: road, dist_km: 959, base_time_h: 21.8, capacity_units_day: 1800, cost_per_unit: 2158, co2_kg_per_unit: 29.7, corridor_id: NH48N}
+  - {id: L040, from: W-AMD, to: W-DEL, mode: road, dist_km: 959, base_time_h: 21.8, capacity_units_day: 1800, cost_per_unit: 2158, co2_kg_per_unit: 29.7, corridor_id: NH48N}
+  - {id: L041, from: W-AMD, to: W-BOM, mode: road, dist_km: 543, base_time_h: 12.6, capacity_units_day: 3000, cost_per_unit: 1222, co2_kg_per_unit: 16.8, corridor_id: NH48W}
+  - {id: L042, from: W-BOM, to: W-AMD, mode: road, dist_km: 543, base_time_h: 12.6, capacity_units_day: 3000, cost_per_unit: 1222, co2_kg_per_unit: 16.8, corridor_id: NH48W}
+  - {id: L043, from: W-BOM, to: W-PNQ, mode: road, dist_km: 157, base_time_h: 4, capacity_units_day: 3000, cost_per_unit: 353, co2_kg_per_unit: 4.9, corridor_id: MUMPUN}
+  - {id: L044, from: W-PNQ, to: W-BOM, mode: road, dist_km: 157, base_time_h: 4, capacity_units_day: 3000, cost_per_unit: 353, co2_kg_per_unit: 4.9, corridor_id: MUMPUN}
+  - {id: L045, from: W-PNQ, to: W-HYD, mode: road, dist_km: 655, base_time_h: 15.1, capacity_units_day: 1800, cost_per_unit: 1474, co2_kg_per_unit: 20.3, corridor_id: NH65W}
+  - {id: L046, from: W-HYD, to: W-PNQ, mode: road, dist_km: 655, base_time_h: 15.1, capacity_units_day: 1800, cost_per_unit: 1474, co2_kg_per_unit: 20.3, corridor_id: NH65W}
+  - {id: L047, from: W-BOM, to: W-NAG, mode: road, dist_km: 860, base_time_h: 19.6, capacity_units_day: 1800, cost_per_unit: 1936, co2_kg_per_unit: 26.7, corridor_id: SAMRUDDHI}
+  - {id: L048, from: W-NAG, to: W-BOM, mode: road, dist_km: 860, base_time_h: 19.6, capacity_units_day: 1800, cost_per_unit: 1936, co2_kg_per_unit: 26.7, corridor_id: SAMRUDDHI}
+  - {id: L049, from: W-NAG, to: W-HYD, mode: road, dist_km: 572, base_time_h: 13.2, capacity_units_day: 1800, cost_per_unit: 1288, co2_kg_per_unit: 17.7, corridor_id: NH44C}
+  - {id: L050, from: W-HYD, to: W-NAG, mode: road, dist_km: 572, base_time_h: 13.2, capacity_units_day: 1800, cost_per_unit: 1288, co2_kg_per_unit: 17.7, corridor_id: NH44C}
+  - {id: L051, from: W-DEL, to: W-NAG, mode: road, dist_km: 1096, base_time_h: 24.9, capacity_units_day: 900, cost_per_unit: 2466, co2_kg_per_unit: 34, corridor_id: NH44N}
+  - {id: L052, from: W-NAG, to: W-DEL, mode: road, dist_km: 1096, base_time_h: 24.9, capacity_units_day: 900, cost_per_unit: 2466, co2_kg_per_unit: 34, corridor_id: NH44N}
+  - {id: L053, from: W-HYD, to: W-VGA, mode: road, dist_km: 325, base_time_h: 7.7, capacity_units_day: 3000, cost_per_unit: 731, co2_kg_per_unit: 10.1, corridor_id: HYD-VGA-NH65}
+  - {id: L054, from: W-VGA, to: W-HYD, mode: road, dist_km: 325, base_time_h: 7.7, capacity_units_day: 3000, cost_per_unit: 731, co2_kg_per_unit: 10.1, corridor_id: HYD-VGA-NH65}
+  - {id: L055, from: W-HYD, to: W-VGA, mode: road, dist_km: 362, base_time_h: 8.5, capacity_units_day: 900, cost_per_unit: 815, co2_kg_per_unit: 11.2, corridor_id: HYD-VGA-KHAMMAM}
+  - {id: L056, from: W-VGA, to: W-HYD, mode: road, dist_km: 362, base_time_h: 8.5, capacity_units_day: 900, cost_per_unit: 815, co2_kg_per_unit: 11.2, corridor_id: HYD-VGA-KHAMMAM}
+  - {id: L057, from: W-HYD, to: W-BLR, mode: road, dist_km: 609, base_time_h: 14, capacity_units_day: 3000, cost_per_unit: 1371, co2_kg_per_unit: 18.9, corridor_id: NH44S}
+  - {id: L058, from: W-BLR, to: W-HYD, mode: road, dist_km: 609, base_time_h: 14, capacity_units_day: 3000, cost_per_unit: 1371, co2_kg_per_unit: 18.9, corridor_id: NH44S}
+  - {id: L059, from: W-BLR, to: W-CHE, mode: road, dist_km: 313, base_time_h: 7.4, capacity_units_day: 3000, cost_per_unit: 704, co2_kg_per_unit: 9.7, corridor_id: BLR-CHE}
+  - {id: L060, from: W-CHE, to: W-BLR, mode: road, dist_km: 313, base_time_h: 7.4, capacity_units_day: 3000, cost_per_unit: 704, co2_kg_per_unit: 9.7, corridor_id: BLR-CHE}
+  - {id: L061, from: W-CHE, to: W-VGA, mode: road, dist_km: 511, base_time_h: 11.8, capacity_units_day: 1800, cost_per_unit: 1149, co2_kg_per_unit: 15.8, corridor_id: NH16S}
+  - {id: L062, from: W-VGA, to: W-CHE, mode: road, dist_km: 511, base_time_h: 11.8, capacity_units_day: 1800, cost_per_unit: 1149, co2_kg_per_unit: 15.8, corridor_id: NH16S}
+  - {id: L063, from: W-VGA, to: W-KOL, mode: road, dist_km: 1370, base_time_h: 30.9, capacity_units_day: 900, cost_per_unit: 3082, co2_kg_per_unit: 42.5, corridor_id: NH16N}
+  - {id: L064, from: W-KOL, to: W-VGA, mode: road, dist_km: 1370, base_time_h: 30.9, capacity_units_day: 900, cost_per_unit: 3082, co2_kg_per_unit: 42.5, corridor_id: NH16N}
+  - {id: L065, from: W-NAG, to: W-KOL, mode: road, dist_km: 1253, base_time_h: 28.3, capacity_units_day: 900, cost_per_unit: 2820, co2_kg_per_unit: 38.8, corridor_id: NH53}
+  - {id: L066, from: W-KOL, to: W-NAG, mode: road, dist_km: 1253, base_time_h: 28.3, capacity_units_day: 900, cost_per_unit: 2820, co2_kg_per_unit: 38.8, corridor_id: NH53}
+  - {id: L067, from: W-DEL, to: W-KOL, mode: rail, dist_km: 1644, base_time_h: 51, capacity_units_day: 2500, cost_per_unit: 1973, co2_kg_per_unit: 18.1, corridor_id: EDFC}
+  - {id: L068, from: W-KOL, to: W-DEL, mode: rail, dist_km: 1644, base_time_h: 51, capacity_units_day: 2500, cost_per_unit: 1973, co2_kg_per_unit: 18.1, corridor_id: EDFC}
+  - {id: L069, from: W-BOM, to: W-NAG, mode: rail, dist_km: 827, base_time_h: 27.6, capacity_units_day: 2500, cost_per_unit: 993, co2_kg_per_unit: 9.1, corridor_id: MUM-NAG-RAIL}
+  - {id: L070, from: W-NAG, to: W-BOM, mode: rail, dist_km: 827, base_time_h: 27.6, capacity_units_day: 2500, cost_per_unit: 993, co2_kg_per_unit: 9.1, corridor_id: MUM-NAG-RAIL}
+  - {id: L071, from: W-HYD, to: W-VGA, mode: rail, dist_km: 312, base_time_h: 12.9, capacity_units_day: 2500, cost_per_unit: 375, co2_kg_per_unit: 3.4, corridor_id: HYD-VGA-RAIL}
+  - {id: L072, from: W-VGA, to: W-HYD, mode: rail, dist_km: 312, base_time_h: 12.9, capacity_units_day: 2500, cost_per_unit: 375, co2_kg_per_unit: 3.4, corridor_id: HYD-VGA-RAIL}
+  - {id: L073, from: W-DEL, to: C-DEL, mode: road, dist_km: 54, base_time_h: 1.7, capacity_units_day: 3000, cost_per_unit: 120, co2_kg_per_unit: 1.7, corridor_id: W-DEL-C-DEL}
+  - {id: L074, from: W-DEL, to: C-JAI, mode: road, dist_km: 259, base_time_h: 6.3, capacity_units_day: 1800, cost_per_unit: 584, co2_kg_per_unit: 8, corridor_id: W-DEL-C-JAI}
+  - {id: L075, from: W-DEL, to: C-LKO, mode: road, dist_km: 576, base_time_h: 13.3, capacity_units_day: 1800, cost_per_unit: 1296, co2_kg_per_unit: 17.9, corridor_id: W-DEL-C-LKO}
+  - {id: L076, from: W-AMD, to: C-AMD, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 3000, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: W-AMD-C-AMD}
+  - {id: L077, from: W-AMD, to: C-JAI, mode: road, dist_km: 701, base_time_h: 16.1, capacity_units_day: 900, cost_per_unit: 1577, co2_kg_per_unit: 21.7, corridor_id: W-AMD-C-JAI}
+  - {id: L078, from: W-BOM, to: C-MUM, mode: road, dist_km: 40, base_time_h: 1.4, capacity_units_day: 3000, cost_per_unit: 90, co2_kg_per_unit: 1.2, corridor_id: W-BOM-C-MUM}
+  - {id: L079, from: W-PNQ, to: C-PNQ, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 3000, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: W-PNQ-C-PNQ}
+  - {id: L080, from: W-PNQ, to: C-MUM, mode: road, dist_km: 157, base_time_h: 4, capacity_units_day: 900, cost_per_unit: 352, co2_kg_per_unit: 4.9, corridor_id: W-PNQ-C-MUM}
+  - {id: L081, from: W-NAG, to: C-NAG, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: W-NAG-C-NAG}
+  - {id: L082, from: W-HYD, to: C-HYD, mode: road, dist_km: 23, base_time_h: 1, capacity_units_day: 3000, cost_per_unit: 52, co2_kg_per_unit: 0.7, corridor_id: W-HYD-C-HYD}
+  - {id: L083, from: W-HYD, to: C-NAG, mode: road, dist_km: 572, base_time_h: 13.2, capacity_units_day: 900, cost_per_unit: 1288, co2_kg_per_unit: 17.7, corridor_id: W-HYD-C-NAG}
+  - {id: L084, from: W-VGA, to: C-VGA, mode: road, dist_km: 15, base_time_h: 0.8, capacity_units_day: 1800, cost_per_unit: 34, co2_kg_per_unit: 0.5, corridor_id: W-VGA-C-VGA}
+  - {id: L085, from: W-VGA, to: C-VTZ, mode: road, dist_km: 394, base_time_h: 9.3, capacity_units_day: 1800, cost_per_unit: 886, co2_kg_per_unit: 12.2, corridor_id: W-VGA-C-VTZ}
+  - {id: L086, from: W-VGA, to: C-BHU, mode: road, dist_km: 896, base_time_h: 20.4, capacity_units_day: 900, cost_per_unit: 2016, co2_kg_per_unit: 27.8, corridor_id: W-VGA-C-BHU}
+  - {id: L087, from: W-BLR, to: C-BLR, mode: road, dist_km: 33, base_time_h: 1.2, capacity_units_day: 3000, cost_per_unit: 74, co2_kg_per_unit: 1, corridor_id: W-BLR-C-BLR}
+  - {id: L088, from: W-BLR, to: C-KOC, mode: road, dist_km: 503, base_time_h: 11.7, capacity_units_day: 1800, cost_per_unit: 1132, co2_kg_per_unit: 15.6, corridor_id: W-BLR-C-KOC}
+  - {id: L089, from: W-CHE, to: C-CHE, mode: road, dist_km: 36, base_time_h: 1.3, capacity_units_day: 3000, cost_per_unit: 81, co2_kg_per_unit: 1.1, corridor_id: W-CHE-C-CHE}
+  - {id: L090, from: W-CHE, to: C-KOC, mode: road, dist_km: 695, base_time_h: 15.9, capacity_units_day: 900, cost_per_unit: 1564, co2_kg_per_unit: 21.5, corridor_id: W-CHE-C-KOC}
+  - {id: L091, from: W-KOL, to: C-KOL, mode: road, dist_km: 18, base_time_h: 0.9, capacity_units_day: 3000, cost_per_unit: 41, co2_kg_per_unit: 0.6, corridor_id: W-KOL-C-KOL}
+  - {id: L092, from: W-KOL, to: C-BHU, mode: road, dist_km: 478, base_time_h: 11.1, capacity_units_day: 1800, cost_per_unit: 1076, co2_kg_per_unit: 14.8, corridor_id: W-KOL-C-BHU}

@@ -1,0 +1,16 @@
+flowchart LR
+    LOGIN[12 Login] --> CR[1 Control Room]
+    CR --> EW[2 Early Warning]
+    CR --> SL[3 Scenario Lab]
+    CR --> ND[7 Node Detail / Blast Radius]
+    CR --> AC[8 Attack Center and Trust Monitor]
+    CR --> FR[9 Fragility and Resilience]
+    CR --> EV[10 Evaluation and Benchmark]
+    CR --> AU[11 Audit Trail]
+    EW -->|simulate now| ST[5 Strategies]
+    SL -->|run| CV[4 Cascade View]
+    CV --> ST
+    ST --> WHY[6 Why This Plan]
+    ST -->|approve| AU
+    AC -->|raw vs trusted| ST
+    FR --> ND

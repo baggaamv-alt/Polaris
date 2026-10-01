@@ -1,0 +1,28 @@
+flowchart LR
+    subgraph HIDDEN[Hidden - truth schema]
+        GT[Ground-truth world C01<br/>true positions, inventory,<br/>demand, outcomes]
+        LB[Observation labels<br/>is_attacked, injector, true_value]
+    end
+    GT -->|noisy / attacked observations| ING[Ingestion + Trust C02/C04]
+    ING --> TW[Twin belief C05]
+    TW --> PLAN[Recommendations and decisions C10/C11]
+    PLAN -->|executed plans| GT
+
+    GT -.-> EV[Evaluation C12]
+    LB -.-> EV
+    TW -.-> EV
+    ING -.->|quarantine + detections| EV
+    PLAN -.-> EV
+    ORC[Oracle optimizer<br/>perfect information] -.-> EV
+    GT -.-> ORC
+
+    EV --> M1[Fidelity: ETA MAE/MAPE,<br/>inventory error, stockout P/R,<br/>cascade accuracy]
+    EV --> M2[Decision: regret vs oracle,<br/>service level, cost, CO2]
+    EV --> M3[Security: detection rate, FPR,<br/>time-to-detect, time-to-recover,<br/>mode correctness]
+    EV --> M4[Performance: events/s, p95 latency,<br/>sim and solver runtime]
+    M1 --> BT[Resilience Benchmark table<br/>seeded, reproducible]
+    M2 --> BT
+    M3 --> BT
+    M4 --> BT
+    BT --> UI[Evaluation page + Grafana]
+    BT --> DR[Drift over time]

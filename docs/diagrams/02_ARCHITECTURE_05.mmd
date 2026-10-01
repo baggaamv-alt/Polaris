@@ -1,0 +1,32 @@
+flowchart TB
+    LB[Caddy / cloud LB<br/>TLS termination] --> WEBS[web x2]
+    LB --> GW[gateway x2<br/>/ingest only, rate limited]
+    LB --> APIS[api x2<br/>stateless, JWT]
+
+    GW -->|XADD| RS[(Redis<br/>streams + cache<br/>AOF, maxmemory policy)]
+    RS -->|consumer group trust| IW1[ingest-worker 1]
+    RS --> IW2[ingest-worker 2]
+    RS --> IWN[ingest-worker N<br/>scaled on stream lag]
+    RS -->|arq| JW1[job-worker 1..M<br/>scaled on queue depth]
+
+    IW1 --> PGP[(Postgres primary<br/>Timescale)]
+    IW2 --> PGP
+    IWN --> PGP
+    JW1 --> PGP
+    APIS -->|reads| PGR[(Postgres read replica<br/>COULD)]
+    APIS --> RS
+
+    subgraph MON[Monitoring]
+        PR[Prometheus] --> AM[Alertmanager]
+        PR --> GF[Grafana dashboards]
+    end
+    PR -.-> GW
+    PR -.-> APIS
+    PR -.-> IW1
+    PR -.-> JW1
+
+    subgraph K8S[COULD: Kubernetes]
+        HPA[HPA: ingest-worker on stream lag,<br/>job-worker on queue depth,<br/>api on CPU 70%]
+    end
+    HPA -.-> IWN
+    HPA -.-> JW1

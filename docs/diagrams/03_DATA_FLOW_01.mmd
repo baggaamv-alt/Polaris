@@ -1,0 +1,31 @@
+flowchart LR
+    S1[Telemetry simulator C01<br/>vehicles, warehouses,<br/>shipments, ports] --> G
+    S2[Supplier feeds C01] --> G
+    S3[Orders C01] --> G
+    S4[Weather LIVE / alerts LIVE<br/>AIS REPLAY / EO MOCK<br/>via C07] --> G
+
+    G[Ingestion gateway C02<br/>auth, envelope schema,<br/>size, rate limit, dedupe] -->|valid envelope| B[(Event bus C03<br/>ev.raw)]
+    G -->|malformed| DLQ[(Dead-letter queue)]
+    B --> V[Validation checks C04<br/>schema, physics, kinematic,<br/>road-network, route, temporal]
+    V --> T[Trust scoring C04<br/>reading rho, entity tau,<br/>class + reasons]
+    T -->|trusted| TW[Twin state C05]
+    T -->|estimated: widen bands| TW
+    T -->|quarantined| QQ[(Quarantine + audit)]
+    TW --> INF[Event inference C17]
+    INF -->|link status + confidence| TW
+    TW --> RISK[Risk C08<br/>disruption probability]
+    TW --> SIM[Simulation C09<br/>cascade + Monte Carlo]
+    RISK --> SIM
+    SIM --> OPT[Optimizer C10<br/>strategies + EV trigger]
+    OPT --> EXP[Copilot C13<br/>narrative only]
+    EXP --> HUM{Operator<br/>approve / modify}
+    OPT --> HUM
+    HUM -->|modify| OPT
+    HUM -->|approve| ACT[Decision C11<br/>audit + outbox]
+    ACT -->|apply plan| TW
+    ACT -->|dispatch commands| S1
+    TW -.->|belief| EV[Evaluation C12]
+    QQ -.->|detections| EV
+    ACT -.->|decisions| EV
+    GT[(Ground truth<br/>truth schema)] -.->|hidden truth + labels| EV
+    EV --> BM[Fidelity, regret,<br/>Resilience Benchmark]

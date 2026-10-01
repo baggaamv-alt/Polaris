@@ -1,0 +1,10 @@
+flowchart LR
+    SUP[Supplier] -->|Supplies / TransportLink| WH[Warehouse]
+    SUP -->|TransportLink| FAC[Factory]
+    SUP -->|TransportLink| PORT[Port]
+    PORT -->|TransportLink| WH
+    PORT <-->|TransportLink sea| PORT2[Port]
+    FAC -->|TransportLink| WH
+    WH <-->|TransportLink road or rail| WH2[Warehouse]
+    WH -->|Serves / TransportLink| CUS[CustomerCluster]
+    VEH[Vehicle] -.->|ON_LINK| WH

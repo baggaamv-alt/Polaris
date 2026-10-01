@@ -1,0 +1,36 @@
+sequenceDiagram
+    autonumber
+    participant V as Trucks on L053 (FLEET-A)
+    participant O as Other trucks (FLEET-B, C)
+    participant TR as Trust Engine C04
+    participant INF as Inference C17
+    participant CTX as Signals C07 / C08
+    participant TW as Twin C05
+    participant SIM as Simulation C09
+    participant OPZ as Optimizer C10
+    participant OPR as Operator
+    V->>TR: speed about 0 readings
+    TR->>INF: trusted readings only (tau >= 0.80)
+    O->>TR: normal-speed readings on same link
+    TR->>INF: trusted readings
+    INF->>INF: cluster check N, R, T met
+    INF->>INF: quorum q = min(1, sum tau / Q)
+    INF->>CTX: weather, alerts, gate scans for L053
+    CTX-->>INF: corroboration E, rest-stop registry
+    INF->>INF: independence I, contradiction X, conf
+    alt conf >= 0.75 and corroborated
+        INF->>TW: link L053 = BLOCKED_INFERRED (conf)
+        TW->>SIM: trigger cascade + Monte Carlo
+        SIM->>OPZ: impacts
+        OPZ->>OPR: recommendation with evidence
+        OPR-->>OPZ: approve / modify
+    else 0.40 <= conf < 0.75 or no corroboration
+        INF->>TW: link L053 = SUSPECTED (conf), routing unchanged
+        INF->>OPR: confirm blockage? evidence shown
+    else conf < 0.40
+        INF->>INF: log only
+    end
+    opt X > 0.20
+        INF->>TR: lower context check for cluster reporters
+        INF->>OPR: coordinated_anomaly alert to Security Analyst
+    end

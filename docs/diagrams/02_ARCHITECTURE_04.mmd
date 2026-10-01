@@ -1,0 +1,30 @@
+flowchart TB
+    DEV[Developer push to main] --> GHA[GitHub Actions<br/>lint, test, fuzz, build]
+    GHA -->|push images| GHCR[(GHCR registry)]
+    GHA -->|ssh deploy: compose pull and up -d| VM
+
+    subgraph AWS[AWS ap-south-1]
+        subgraph VM[EC2 t3.xlarge - Docker Compose]
+            C1[caddy :443<br/>Let's Encrypt TLS]
+            C2[web]
+            C3[api]
+            C4[ingest-worker]
+            C5[signals-worker]
+            C6[job-worker]
+            C7[world-sim]
+            C8[(postgres volume<br/>EBS gp3 50 GB)]
+            C9[(redis AOF)]
+        end
+        SG[Security group:<br/>443 open, 22 from CI IP only]
+    end
+
+    USER([Browser]) -->|HTTPS| C1
+    C1 --> C2
+    C1 --> C3
+    C3 --- C8
+    C3 --- C9
+    C4 --- C8
+    C4 --- C9
+    C5 -->|HTTPS egress| OMX[Open-Meteo, GDACS]
+    C3 -->|HTTPS egress| CL[Claude API]
+    BK[Nightly pg_dump to S3] -.-> C8

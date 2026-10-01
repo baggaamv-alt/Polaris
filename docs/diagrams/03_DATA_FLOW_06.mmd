@@ -1,0 +1,11 @@
+flowchart LR
+    E1[Telemetry event] --> E2[Validation +<br/>trust scoring C04]
+    E2 --> E3[Pattern detection C17<br/>spatial-temporal cluster]
+    E3 --> E4[Cause inference C17<br/>weather, alerts, rest stops,<br/>toll plazas, gate scans]
+    E4 --> E5[Twin state update C05<br/>link status + confidence]
+    E5 --> E6[Risk prediction C08]
+    E6 --> E7[Scenario simulation C09]
+    E7 --> E8[Optimization C10]
+    E8 --> E9[Recommendation C11<br/>human approves]
+    E3 -.->|guard: trust-weighted quorum| E3
+    E4 -.->|guard: independent corroboration<br/>else SUSPECTED| E5

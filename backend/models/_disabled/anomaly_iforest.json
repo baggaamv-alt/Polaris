@@ -1,0 +1,86 @@
+{
+  "model": "IsolationForest",
+  "sklearn": "1.9.1",
+  "features": [
+    "speed_kmh",
+    "log_implied_kmh",
+    "log_speed_gap",
+    "accel_kmh_per_min",
+    "heading_change_deg",
+    "log_road_km",
+    "log_route_km",
+    "route_growth_km_min"
+  ],
+  "params": {
+    "n_estimators": 300,
+    "max_samples": 4096,
+    "contamination": "auto",
+    "random_state": 0
+  },
+  "train": {
+    "seeds": [
+      101,
+      102,
+      103
+    ],
+    "hours_each": 2.0,
+    "readings": 216000,
+    "labels_used": false
+  },
+  "calibration": {
+    "flag_below": -0.09880973121018413,
+    "zero_below": -0.16683208432311347,
+    "one_above": -0.0005519623897096674,
+    "flag_quantile": 0.005
+  },
+  "calibration_seed": 104,
+  "evaluation": {
+    "seeds": [
+      201,
+      202
+    ],
+    "hours_each": 2.0,
+    "attacks": [
+      "gps_spoof_teleport",
+      "gps_spoof_drift",
+      "speed_spike"
+    ],
+    "eval_readings": 144000,
+    "eval_attacked": 561,
+    "roc_auc": 0.9874,
+    "average_precision": 0.6306,
+    "model_fpr_clean": 0.00567,
+    "rules_fpr_clean": 0.00607,
+    "combined_fpr_clean": 0.01168,
+    "per_injector": {
+      "gps_spoof_teleport": {
+        "attacked_readings": 9,
+        "model_recall": 1.0,
+        "rules_recall": 1.0,
+        "combined_recall": 1.0,
+        "caught_by_model_only": 0
+      },
+      "gps_spoof_drift": {
+        "attacked_readings": 536,
+        "model_recall": 0.944,
+        "rules_recall": 0.0299,
+        "combined_recall": 0.944,
+        "caught_by_model_only": 490
+      },
+      "speed_spike": {
+        "attacked_readings": 16,
+        "model_recall": 1.0,
+        "rules_recall": 1.0,
+        "combined_recall": 1.0,
+        "caught_by_model_only": 0
+      }
+    },
+    "drift_time_to_detect": {
+      "episodes": 5,
+      "median_readings_to_detect_model": 5.0,
+      "median_readings_to_detect_rules": 116.0
+    }
+  },
+  "data": "simulated (PNT1 world simulator); not validated on real telemetry",
+  "train_time_s": 102.6
+}

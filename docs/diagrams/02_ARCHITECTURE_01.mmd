@@ -1,0 +1,32 @@
+flowchart TB
+    OPS([Operations Controller]):::person
+    PLAN([Supply Chain Planner]):::person
+    SEC([Security / Data Quality Analyst]):::person
+    EXEC([Executive / Judge]):::person
+
+    subgraph SYS[PNT1 Logistics Network Digital Twin]
+        TWIN[Twin platform<br/>see - trust - predict - respond - prove]
+    end
+
+    WORLD[Ground-truth world simulator<br/>synthetic fleets, warehouses, ports<br/>SYNTHETIC]:::ext
+    OM[Open-Meteo forecast API<br/>LIVE, fallback REPLAY]:::ext
+    GD[GDACS / NASA FIRMS alerts<br/>LIVE, fallback REPLAY]:::ext
+    AISX[AIS vessel sample<br/>REPLAY]:::ext
+    EO[Pre-processed EO flood mask<br/>MOCK]:::ext
+    LLM[Anthropic Claude API<br/>explanations only]:::ext
+
+    OPS -->|monitor, approve plans| TWIN
+    PLAN -->|what-ifs, fragility audit| TWIN
+    SEC -->|review quarantine, attacks| TWIN
+    EXEC -->|fidelity and benchmark| TWIN
+    WORLD -->|noisy / attacked telemetry| TWIN
+    OM -->|hourly forecasts| TWIN
+    GD -->|disaster alerts| TWIN
+    AISX -->|vessel positions| TWIN
+    EO -->|flood polygons| TWIN
+    TWIN -->|structured optimizer output| LLM
+    LLM -->|narrative text| TWIN
+    WORLD -.->|hidden truth labels, eval only| TWIN
+
+    classDef person fill:#dbeafe,stroke:#1e40af,color:#1e3a8a
+    classDef ext fill:#f3f4f6,stroke:#6b7280,color:#111827

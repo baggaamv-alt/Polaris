@@ -1,0 +1,45 @@
+flowchart TD
+    subgraph SRC[Sources]
+        SAT[Earth-observation / disaster feeds - LIVE or MOCK]
+        WX[Weather forecasts - LIVE]
+        TEL[Telemetry simulator - vehicles, warehouses, shipments, ports]
+        AIS[AIS vessel data - REPLAY]
+    end
+
+    SAT --> ING
+    WX --> ING
+    TEL --> ING
+    AIS --> ING
+
+    ING[Stream Ingestion<br/>Gateway + event bus<br/>rate limit, dead-letter]
+    ING --> TRUST[Trust Engine<br/>validation + anomaly detection<br/>trust score + quarantine]
+    TRUST -->|trusted or estimated data| TWIN[Digital Twin<br/>graph + state engine + confidence layer]
+    TRUST -.->|quarantined| Q[Quarantine queue + audit log]
+
+    TWIN --> PRED[Prediction<br/>disruption probability, node risk, lead-time]
+    TWIN --> SIM[Simulation<br/>cascade, compound, Monte Carlo]
+    TWIN --> GRAPH[Graph analytics<br/>blast radius, fragility, min-cut]
+
+    PRED --> OPT
+    SIM --> OPT
+    GRAPH --> OPT
+
+    OPT[Optimization<br/>constraints + objectives + EV trigger]
+    OPT --> ROUTE[Routing]
+    OPT --> INV[Inventory reallocation]
+    OPT --> FLEET[Fleet assignment]
+
+    ROUTE --> COP
+    INV --> COP
+    FLEET --> COP
+
+    COP[AI Copilot<br/>explains structured optimizer output only]
+    COP --> HUMAN[Human decision<br/>approve / modify]
+    HUMAN -->|approved action| TWIN
+    HUMAN --> AUDIT[Decision audit trail]
+
+    GT[Ground-truth world simulator] -.->|hidden truth| EVAL[Evaluation service<br/>fidelity, regret, benchmark]
+    TWIN -.-> EVAL
+    TRUST -.-> EVAL
+    OPT -.-> EVAL
+    GT --> TEL

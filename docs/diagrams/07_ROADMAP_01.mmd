@@ -1,0 +1,72 @@
+gantt
+    title PNT1 build plan, Oct 2026
+    dateFormat YYYY-MM-DD
+    axisFormat %d %b
+
+    section Level 1
+    Level 1 docs all roles                 :crit, l1, 2026-10-01, 2d
+
+    section L2 BE
+    T02 Seed loader and twin graph         :crit, t02, 2026-10-03, 1d
+    T03 World sim core                     :crit, t03, 2026-10-04, 2d
+    T06 Ten attack injectors and labels    :crit, t06, 2026-10-06, 1d
+    T11 Cascade engine                     :t11, 2026-10-07, 2d
+    T16b Approval and audit backend        :t16b, 2026-10-09, 1d
+
+    section L2 OPT
+    T10 Graph analytics                    :t10, 2026-10-03, 1d
+    T12 LP optimizer presets fallback      :t12, 2026-10-04, 2d
+    T07 Trust Engine rules and state       :crit, t07, 2026-10-06, 2d
+    T09 Modes and T13 strategies EV        :crit, t13, 2026-10-08, 1d
+
+    section L2 OPS
+    T01 Repo compose CI skeleton           :crit, t01, 2026-10-03, 1d
+    T05 Gateway schemas DLQ streams        :crit, t05, 2026-10-04, 2d
+    T04 Link geometry prebake              :t04, 2026-10-06, 1d
+    T08 Twin writer snapshots WS           :t08, 2026-10-07, 1d
+    T18 Worked example tests and fuzz      :t18, 2026-10-08, 2d
+
+    section L2 FE
+    T14 Shell and Control Room map         :t14, 2026-10-03, 3d
+    T17 Attack Center and trust card       :t17, 2026-10-06, 2d
+    T15 Scenario Lab and Cascade View      :t15, 2026-10-08, 1d
+    T16 Strategies and approve UI          :t16, 2026-10-09, 1d
+
+    section L2 gate
+    T19 Integration and L2 dry run         :crit, milestone, t19, 2026-10-09, 0d
+
+    section L3 BE
+    T20 Weather connector and replay       :crit, t20, 2026-10-10, 1d
+    T22 Monte Carlo runner and jobs        :crit, t22, 2026-10-11, 2d
+    T31 JWT RBAC argon2 rate limits        :t31, 2026-10-13, 1d
+    T23 Proactive workflow end to end      :crit, t23, 2026-10-14, 1d
+    T30 Copilot with number validator      :t30, 2026-10-15, 1d
+
+    section L3 OPT
+    T24 Blockage inference and guard       :t24, 2026-10-10, 2d
+    T21 Risk model and calibration         :crit, t21, 2026-10-12, 2d
+    T25 IsolationForest and context        :t25, 2026-10-14, 1d
+    T26 Raw vs trusted comparison          :t26, 2026-10-15, 1d
+
+    section L3 OPS
+    T32 CI CD GHCR EC2 Caddy TLS           :crit, t32, 2026-10-10, 2d
+    T27 Fidelity and regret oracle         :crit, t27, 2026-10-12, 2d
+    T28 Benchmark suite make bench         :crit, t28, 2026-10-14, 2d
+
+    section L3 FE
+    T29 Early Warning Why Fragility Eval   :t29, 2026-10-10, 4d
+    T23f Proactive flow UI                 :t23f, 2026-10-14, 1d
+    Polish and accessibility               :t29p, 2026-10-15, 1d
+
+    section L3 gate
+    T33 L3 rehearsal on live URL           :crit, milestone, t33, 2026-10-16, 0d
+
+    section L4
+    T34 Redis cache indexes compression    :t34, 2026-10-17, 1d
+    T37 Partitioned streams scale out      :t37, 2026-10-18, 1d
+    T35 Prometheus Grafana alerts          :t35, 2026-10-17, 2d
+    T36 Load tests Locust and world load   :t36, 2026-10-19, 1d
+    T38 Fleet assignment CP-SAT            :t38, 2026-10-17, 2d
+    T39 Should items recovery triage UI    :t39, 2026-10-19, 2d
+    T40 K8s manifests HPA COULD            :t40, 2026-10-20, 1d
+    T41 Final benchmark and presentation backup    :crit, t41, 2026-10-21, 1d

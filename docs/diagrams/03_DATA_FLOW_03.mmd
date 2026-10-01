@@ -1,0 +1,32 @@
+flowchart TD
+    IN[Envelope from ev.raw] --> DUP{Duplicate event_id<br/>or seq not increasing?}
+    DUP -->|yes| DROP[Drop + count replay<br/>temporal c_T = 0<br/>source reputation down]
+    DUP -->|no| SCH[Schema / structure check<br/>missing fields: use last trusted value,<br/>mark field stale]
+    SCH --> PHY[Range / physics check<br/>HARD]
+    PHY --> KIN[Kinematic check vs last trusted fix<br/>HARD]
+    KIN --> NET[Geospatial / road-network match<br/>HARD]
+    NET --> RTE[Route consistency + CUSUM drift]
+    RTE --> TMP[Temporal integrity]
+    TMP --> STA[Statistical anomaly<br/>IsolationForest - SHOULD]
+    STA --> CTX[Independent context<br/>weather, alerts, gate scans,<br/>EO mask labelled MOCK - SHOULD]
+    CTX --> AGG[Aggregate: avg = sum w c / sum w]
+    AGG --> HARD{Any hard check < 0.20?}
+    HARD -->|yes| CAP[rho = min 0.20, avg]
+    HARD -->|no| NCAP[rho = avg<br/>apply CUSUM caps]
+    CAP --> SM[Entity state machine<br/>decay / cooldown / slow recovery]
+    NCAP --> SM
+    SM --> CLS{Entity trust tau}
+    CLS -->|tau >= 0.80 Trusted| UPD[Update twin normally]
+    CLS -->|0.50 to 0.80 Estimated| UPDW[Update twin with widened<br/>uncertainty, optimizer discount]
+    CLS -->|tau < 0.50 Quarantined| QUA[Quarantine reading<br/>NO twin write]
+    QUA --> KEEP[Keep last trusted state<br/>grow uncertainty radius with age]
+    QUA --> EVT[Emit trust.anomaly<br/>entity, reasons, confidences]
+    QUA --> ETA[Mark dependent shipment ETA degraded,<br/>widen band]
+    QUA --> AUD[(Audit entry)]
+    QUA --> REV[Trust Monitor + alert feed<br/>via triage]
+    EVT --> CHG{Decision inputs changed?<br/>affected shipment on a planned route<br/>or inventory used in active plan}
+    CHG -->|yes| RERUN[Optimizer re-run<br/>before/after comparison]
+    CHG -->|no| NOOP[No re-run<br/>avoid alert storm]
+    UPD --> HIST[(trust_history)]
+    UPDW --> HIST
+    QUA --> HIST

@@ -1,0 +1,187 @@
+erDiagram
+    NODE ||--o{ LINK : "origin"
+    NODE ||--o{ LINK : "destination"
+    NODE ||--o{ INVENTORY_POSITION : holds
+    SKU ||--o{ INVENTORY_POSITION : "stocked as"
+    NODE ||--o{ ORDER : "customer cluster"
+    ORDER }o--o{ SHIPMENT : "fulfilled by"
+    VEHICLE ||--o{ SHIPMENT : carries
+    VEHICLE ||--o{ TELEMETRY : emits
+    SOURCE_CREDENTIAL ||--o{ TELEMETRY : authenticates
+    TRUST_STATE ||--o{ TRUST_HISTORY : "history of"
+    TRUST_STATE ||--o{ QUARANTINE_ITEM : quarantines
+    LINK ||--o{ INFERRED_EVENT : "inferred status of"
+    LINK ||--o{ EXTERNAL_SIGNAL : "corridor"
+    SCENARIO ||--o{ SIMULATION_RUN : "executed as"
+    SIMULATION_RUN ||--o{ RECOMMENDATION : produces
+    RECOMMENDATION ||--|{ STRATEGY : compares
+    RECOMMENDATION ||--o| DECISION : "approved by"
+    APP_USER ||--o{ DECISION : approves
+    DECISION ||--o{ AUDIT_LOG : "logged in"
+    BENCHMARK_RUN ||--o{ EVALUATION_RESULT : contains
+
+    NODE {
+        text id PK
+        text type
+        text name
+        float lat
+        float lon
+        int capacity
+        text status
+        float health
+    }
+    LINK {
+        text id PK
+        text from_node FK
+        text to_node FK
+        text mode
+        int capacity_units_day
+        float base_time_h
+        float cost_per_unit
+        float co2_kg_per_unit
+        text status
+        text corridor_id
+    }
+    SKU {
+        text id PK
+        text name
+        float unit_value_inr
+    }
+    INVENTORY_POSITION {
+        text node_id PK
+        text sku PK
+        int qty_reported
+        int qty_verified
+        int safety_stock
+        float confidence
+        timestamptz updated_at
+    }
+    ORDER {
+        uuid id PK
+        text customer_id FK
+        text sku FK
+        int qty
+        timestamptz due_at
+        int priority
+        text status
+        numeric value_inr
+    }
+    SHIPMENT {
+        uuid id PK
+        text vehicle_id FK
+        text_array route_links
+        timestamptz eta
+        float eta_uncertainty_h
+        text status
+    }
+    VEHICLE {
+        text id PK
+        text fleet_id
+        int rated_capacity
+        float driver_hours
+    }
+    TELEMETRY {
+        uuid event_id PK
+        text source_id
+        timestamptz ts_event
+        bigint seq
+        jsonb payload
+    }
+    SOURCE_CREDENTIAL {
+        text source_id PK
+        text fleet_id
+        text key_hash
+    }
+    TRUST_STATE {
+        text entity_id PK
+        float trust
+        text trust_class
+        text mode
+        jsonb check_confidences
+        text_array reasons
+    }
+    TRUST_HISTORY {
+        text entity_id
+        timestamptz ts
+        float reading_trust
+        float entity_trust
+    }
+    QUARANTINE_ITEM {
+        uuid id PK
+        text entity_id FK
+        uuid event_id
+        text_array reasons
+        text review_status
+    }
+    INFERRED_EVENT {
+        uuid id PK
+        text link_id FK
+        text inferred_status
+        float confidence
+        jsonb evidence
+    }
+    EXTERNAL_SIGNAL {
+        uuid id PK
+        text type
+        text corridor_id
+        float severity
+        float probability
+        text data_mode
+    }
+    SCENARIO {
+        uuid id PK
+        text type
+        jsonb params
+        bigint seed
+    }
+    SIMULATION_RUN {
+        uuid id PK
+        uuid scenario_id FK
+        jsonb results
+        jsonb p50
+        jsonb p90
+    }
+    RECOMMENDATION {
+        uuid id PK
+        uuid simulation_run_id FK
+        text chosen_strategy
+        jsonb inputs_snapshot
+        jsonb trust_snapshot
+        text optimizer_version
+    }
+    STRATEGY {
+        uuid id PK
+        uuid recommendation_id FK
+        text kind
+        jsonb metrics
+    }
+    DECISION {
+        uuid id PK
+        uuid recommendation_id FK
+        uuid approver_id FK
+        text action
+        timestamptz ts
+    }
+    APP_USER {
+        uuid id PK
+        text email
+        text role
+    }
+    AUDIT_LOG {
+        bigint seq PK
+        text entry_type
+        jsonb body
+        text prev_hash
+        text hash
+    }
+    BENCHMARK_RUN {
+        uuid id PK
+        text suite
+        text git_sha
+    }
+    EVALUATION_RESULT {
+        uuid id PK
+        uuid benchmark_run_id FK
+        text metric
+        float value
+    }
